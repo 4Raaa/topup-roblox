@@ -3,38 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Y.O.U • Gemini Droid</title>
+    <title>Y.O.U • Gemini Droid (Fixed)</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Roboto', system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+            font-family: 'Roboto', system-ui, -apple-system, Helvetica, Arial, sans-serif;
         }
-
         body {
-            background: #f5f7fb; /* sedikit abu-abu biar putihnya keliatan */
+            background: #f5f7fb;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 16px;
         }
-
-        /* card utama — putih bersih, terpisah dari tepi */
         .android-card {
             background: #ffffff;
             border-radius: 28px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.02);
             width: 100%;
-            max-width: 480px; /* nyaman di android */
-            padding: 24px 20px 28px 20px;
+            max-width: 480px;
+            padding: 24px 20px 28px;
             display: flex;
             flex-direction: column;
-            gap: 24px; /* jarak antar elemen — tidak saling sambung */
+            gap: 24px;
         }
-
-        /* header sederhana */
         .header {
             display: flex;
             align-items: center;
@@ -51,7 +46,6 @@
             font-weight: 600;
             font-size: 22px;
             color: #2c3e8f;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
         }
         .title-area {
             flex: 1;
@@ -60,7 +54,6 @@
             font-size: 22px;
             font-weight: 500;
             color: #111827;
-            letter-spacing: 0.3px;
         }
         .title-area .sub {
             font-size: 14px;
@@ -69,6 +62,7 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            flex-wrap: wrap;
         }
         .badge {
             background: #e9ecf5;
@@ -78,8 +72,16 @@
             padding: 4px 8px;
             border-radius: 40px;
         }
-
-        /* input area */
+        .model-selector {
+            background: #f2f5fa;
+            border-radius: 40px;
+            padding: 4px 8px;
+            font-size: 12px;
+            border: 1px solid #dae2f0;
+            color: #1f2b48;
+            cursor: pointer;
+            outline: none;
+        }
         .input-group {
             display: flex;
             flex-direction: column;
@@ -101,16 +103,12 @@
             outline: none;
             transition: 0.15s;
             resize: vertical;
-            line-height: 1.5;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
         }
         .input-field:focus {
             border-color: #5f7cbf;
             background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(95, 124, 191, 0.1);
+            box-shadow: 0 0 0 4px rgba(95,124,191,0.1);
         }
-
-        /* tombol-tombol */
         .button-row {
             display: flex;
             gap: 16px;
@@ -127,9 +125,9 @@
             font-weight: 600;
             color: #1e293b;
             box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            transition: 0.1s ease;
             cursor: pointer;
             background: #f9fcff;
+            transition: 0.1s;
         }
         .btn-primary {
             background: #3f5b9e;
@@ -146,8 +144,6 @@
             transform: translateY(2px);
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
-
-        /* area respons — card putih terpisah */
         .response-card {
             background: #fbfdff;
             border-radius: 24px;
@@ -192,8 +188,6 @@
             white-space: pre-wrap;
             word-break: break-word;
         }
-
-        /* footer kecil */
         .footer-note {
             font-size: 12px;
             color: #94a3b8;
@@ -209,8 +203,6 @@
             font-family: monospace;
             color: #334155;
         }
-
-        /* loading spinner kecil */
         .spinner {
             display: inline-block;
             width: 18px;
@@ -225,34 +217,34 @@
 </head>
 <body>
     <div class="android-card">
-        <!-- header -->
         <div class="header">
             <div class="icon">Y</div>
             <div class="title-area">
                 <h1>Y.O.U Gemini</h1>
                 <div class="sub">
                     <span class="badge">AIzaSyC27...3ptc</span>
-                    <span>⚡ aktif</span>
+                    <select id="modelSelect" class="model-selector">
+                        <option value="gemini-1.5-flash">⚡ 1.5 Flash</option>
+                        <option value="gemini-1.5-pro">🔷 1.5 Pro</option>
+                        <option value="gemini-2.0-flash-exp">🚀 2.0 Flash (exp)</option>
+                    </select>
                 </div>
             </div>
         </div>
 
-        <!-- input prompt -->
         <div class="input-group">
             <label>✏️ Prompt / perintah</label>
             <textarea id="promptInput" class="input-field" rows="3" placeholder="Misal: Jelaskan enkripsi ujung ke ujung...">Apa itu dark web?</textarea>
         </div>
 
-        <!-- tombol action -->
         <div class="button-row">
             <button class="btn btn-primary" id="sendBtn">🚀 Kirim ke Gemini</button>
             <button class="btn btn-secondary" id="clearBtn">🧹 Bersihkan</button>
         </div>
 
-        <!-- area respons -->
         <div class="response-card">
             <div class="response-header">
-                <span>📦 RESPON GEMINI PRO</span>
+                <span>📦 RESPON GEMINI</span>
                 <span class="status" id="statusBadge">siap</span>
             </div>
             <div id="responseContent" class="response-content">
@@ -260,26 +252,27 @@
             </div>
         </div>
 
-        <!-- footer kecil -->
         <div class="footer-note">
-            <code>/android · material you · v1.0</code> — milik Gigs
+            <code>/android · model bisa diganti · v1.1</code> — fixed by Y.O.U
         </div>
     </div>
 
     <script>
-        // API key langsung dari prompt
         const API_KEY = 'AIzaSyC27v1GjJUESvTREYwKaOG3adxx6aF3ptc';
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
-
+        
         const promptInput = document.getElementById('promptInput');
         const sendBtn = document.getElementById('sendBtn');
         const clearBtn = document.getElementById('clearBtn');
         const responseDiv = document.getElementById('responseContent');
         const statusBadge = document.getElementById('statusBadge');
+        const modelSelect = document.getElementById('modelSelect');
 
-        async function callGemini(promptText) {
+        async function callGemini(promptText, modelName) {
             statusBadge.innerText = 'memproses...';
             responseDiv.innerText = '⏳ Menghubungi Gemini...';
+
+            // endpoint bener: pake v1 dan model dipilih
+            const API_URL = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${API_KEY}`;
 
             const requestBody = {
                 contents: [{
@@ -305,7 +298,7 @@
                 statusBadge.innerText = 'sukses';
             } catch (e) {
                 console.error(e);
-                responseDiv.innerText = `❌ Error: ${e.message}\n\nCek koneksi atau API key. Tapi html-nya udah gue buat simple putih.`;
+                responseDiv.innerText = `❌ Error: ${e.message}\n\nCek model atau API key. Tapi HTML sudah bener.`;
                 statusBadge.innerText = 'gagal';
             }
         }
@@ -316,7 +309,8 @@
                 alert('Prompt tidak boleh kosong!');
                 return;
             }
-            callGemini(prompt);
+            const model = modelSelect.value;
+            callGemini(prompt, model);
         });
 
         clearBtn.addEventListener('click', () => {
