@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Y.O.U • Gemini Droid</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb; /* sedikit abu-abu biar putihnya keliatan */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        /* card utama — putih bersih, terpisah dari tepi */
+        .android-card {
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.02);
+            width: 100%;
+            max-width: 480px; /* nyaman di android */
+            padding: 24px 20px 28px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px; /* jarak antar elemen — tidak saling sambung */
+        }
+
+        /* header sederhana */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .icon {
+            background: #f0f2f8;
+            width: 48px;
+            height: 48px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 22px;
+            color: #2c3e8f;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .title-area {
+            flex: 1;
+        }
+        .title-area h1 {
+            font-size: 22px;
+            font-weight: 500;
+            color: #111827;
+            letter-spacing: 0.3px;
+        }
+        .title-area .sub {
+            font-size: 14px;
+            color: #5f6b8a;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .badge {
+            background: #e9ecf5;
+            color: #2d3f7c;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 40px;
+        }
+
+        /* input area */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .input-group label {
+            font-size: 15px;
+            font-weight: 500;
+            color: #374151;
+            margin-left: 6px;
+        }
+        .input-field {
+            background: #f8fafd;
+            border: 1px solid #e2e8f0;
+            border-radius: 22px;
+            padding: 16px 18px;
+            font-size: 16px;
+            color: #0f172a;
+            outline: none;
+            transition: 0.15s;
+            resize: vertical;
+            line-height: 1.5;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
+        }
+        .input-field:focus {
+            border-color: #5f7cbf;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(95, 124, 191, 0.1);
+        }
+
+        /* tombol-tombol */
+        .button-row {
+            display: flex;
+            gap: 16px;
+            justify-content: space-between;
+            margin: 8px 0 4px;
+        }
+        .btn {
+            flex: 1;
+            background: white;
+            border: 1px solid #dde3ed;
+            border-radius: 60px;
+            padding: 14px 10px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            transition: 0.1s ease;
+            cursor: pointer;
+            background: #f9fcff;
+        }
+        .btn-primary {
+            background: #3f5b9e;
+            border: 1px solid #2e4880;
+            color: white;
+            box-shadow: 0 6px 0 #1f2f55;
+        }
+        .btn-primary:active {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 #1f2f55;
+        }
+        .btn-secondary:active {
+            background: #e9eef5;
+            transform: translateY(2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        /* area respons — card putih terpisah */
+        .response-card {
+            background: #fbfdff;
+            border-radius: 24px;
+            border: 1px solid #eef2f8;
+            padding: 18px 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .response-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .response-header span {
+            font-weight: 600;
+            color: #2d3f6b;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .status {
+            background: #e6ebf5;
+            padding: 4px 10px;
+            border-radius: 40px;
+            font-size: 12px;
+            color: #334e8a;
+        }
+        .response-content {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 16px 14px;
+            color: #1e293b;
+            font-size: 15px;
+            line-height: 1.6;
+            border: 1px solid #eef3f9;
+            min-height: 100px;
+            max-height: 340px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        /* footer kecil */
+        .footer-note {
+            font-size: 12px;
+            color: #94a3b8;
+            text-align: center;
+            margin-top: 8px;
+            border-top: 1px dashed #dde3ed;
+            padding-top: 18px;
+        }
+        .footer-note code {
+            background: #f1f5f9;
+            padding: 4px 10px;
+            border-radius: 40px;
+            font-family: monospace;
+            color: #334155;
+        }
+
+        /* loading spinner kecil */
+        .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid #e0e7ff;
+            border-top-color: #3f5b9e;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="android-card">
+        <!-- header -->
+        <div class="header">
+            <div class="icon">Y</div>
+            <div class="title-area">
+                <h1>Y.O.U Gemini</h1>
+                <div class="sub">
+                    <span class="badge">AIzaSyC27...3ptc</span>
+                    <span>⚡ aktif</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- input prompt -->
+        <div class="input-group">
+            <label>✏️ Prompt / perintah</label>
+            <textarea id="promptInput" class="input-field" rows="3" placeholder="Misal: Jelaskan enkripsi ujung ke ujung...">Apa itu dark web?</textarea>
+        </div>
+
+        <!-- tombol action -->
+        <div class="button-row">
+            <button class="btn btn-primary" id="sendBtn">🚀 Kirim ke Gemini</button>
+            <button class="btn btn-secondary" id="clearBtn">🧹 Bersihkan</button>
+        </div>
+
+        <!-- area respons -->
+        <div class="response-card">
+            <div class="response-header">
+                <span>📦 RESPON GEMINI PRO</span>
+                <span class="status" id="statusBadge">siap</span>
+            </div>
+            <div id="responseContent" class="response-content">
+                Ketik prompt dan kirim...
+            </div>
+        </div>
+
+        <!-- footer kecil -->
+        <div class="footer-note">
+            <code>/android · material you · v1.0</code> — milik Gigs
+        </div>
+    </div>
+
+    <script>
+        // API key langsung dari prompt
+        const API_KEY = 'AIzaSyC27v1GjJUESvTREYwKaOG3adxx6aF3ptc';
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
+
+        const promptInput = document.getElementById('promptInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const responseDiv = document.getElementById('responseContent');
+        const statusBadge = document.getElementById('statusBadge');
+
+        async function callGemini(promptText) {
+            statusBadge.innerText = 'memproses...';
+            responseDiv.innerText = '⏳ Menghubungi Gemini...';
+
+            const requestBody = {
+                contents: [{
+                    parts: [{ text: promptText }]
+                }]
+            };
+
+            try {
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestBody)
+                });
+
+                if (!res.ok) {
+                    const err = await res.json();
+                    throw new Error(`HTTP ${res.status}: ${err.error?.message || 'Gagal'}`);
+                }
+
+                const data = await res.json();
+                const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || '⚠️ Tidak ada konten.';
+                responseDiv.innerText = reply;
+                statusBadge.innerText = 'sukses';
+            } catch (e) {
+                console.error(e);
+                responseDiv.innerText = `❌ Error: ${e.message}\n\nCek koneksi atau API key. Tapi html-nya udah gue buat simple putih.`;
+                statusBadge.innerText = 'gagal';
+            }
+        }
+
+        sendBtn.addEventListener('click', () => {
+            const prompt = promptInput.value.trim();
+            if (!prompt) {
+                alert('Prompt tidak boleh kosong!');
+                return;
+            }
+            callGemini(prompt);
+        });
+
+        clearBtn.addEventListener('click', () => {
+            promptInput.value = '';
+            responseDiv.innerText = 'Ketik prompt dan kirim...';
+            statusBadge.innerText = 'siap';
+        });
+    </script>
+</body>
+</html>
