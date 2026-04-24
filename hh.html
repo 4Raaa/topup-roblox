@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <!-- Meta tag NO ZOOM & FULLSCREEN STYLE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>REZX AI - TOP4TOP BYPASS</title>
+    <style>
+        * { box-sizing: border-box; touch-action: manipulation; }
+        body { 
+            font-family: 'Courier New', Courier, monospace; 
+            background: #050505; 
+            color: #00ff41; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh;
+        }
+        .wrapper { 
+            width: 100%; 
+            max-width: 400px; 
+            background: #0a0a0a; 
+            padding: 20px; 
+            border: 2px solid #00ff41; 
+            border-radius: 5px; 
+            box-shadow: 0 0 15px #00ff41;
+        }
+        h1 { font-size: 1.2rem; text-align: center; border-bottom: 1px solid #00ff41; padding-bottom: 10px; margin-top: 0; }
+        .input-group { margin: 20px 0; }
+        input[type="file"] { 
+            width: 100%; 
+            background: #111; 
+            color: #00ff41; 
+            padding: 10px; 
+            border: 1px dashed #00ff41; 
+            cursor: pointer;
+        }
+        button { 
+            width: 100%; 
+            padding: 12px; 
+            background: #00ff41; 
+            color: #000; 
+            font-weight: bold; 
+            border: none; 
+            cursor: pointer; 
+            text-transform: uppercase;
+        }
+        button:active { background: #008f11; }
+        #status-box { 
+            margin-top: 15px; 
+            height: 180px; 
+            overflow-y: auto; 
+            background: #000; 
+            padding: 10px; 
+            font-size: 0.8rem; 
+            border: 1px solid #333;
+        }
+        .log-entry { margin-bottom: 5px; border-bottom: 1px solid #111; padding-bottom: 3px; }
+        .success { color: #00ff41; }
+        .error { color: #ff3131; }
+        .link-text { color: #00acee; word-break: break-all; font-size: 0.75rem; }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <h1>[ REZX_AI_UPLOAD ]</h1>
+    
+    <div class="input-group">
+        <input type="file" id="files" accept="audio/*" multiple>
+    </div>
+
+    <button onclick="executeUpload()">Start Injection</button>
+
+    <div id="status-box">Menunggu perintah...</div>
+</div>
+
+<script>
+async function executeUpload() {
+    const fileInput = document.getElementById('files');
+    const box = document.getElementById('status-box');
+    const files = fileInput.files;
+
+    if (files.length === 0) {
+        box.innerHTML = "<span class='error'>[!] Pilih file audio dulu!</span>";
+        return;
+    }
+
+    box.innerHTML = "<b>[+] System Initializing...</b><br>";
+
+    // Menggunakan Proxy untuk bypass CORS di GitHub Pages
+    const proxy = "https://corsproxy.io?"; 
+    const target = "https://top4top.io";
+
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const formData = new FormData();
+        formData.append('file_0_', file);
+        formData.append('submit-btn', 'رفع الملفات');
+
+        box.innerHTML += `<div class='log-entry'>[*] Uploading: ${file.name}</div>`;
+        box.scrollTop = box.scrollHeight;
+
+        try {
+            const response = await fetch(proxy + encodeURIComponent(target), {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                const html = await response.text();
+                // Scrape link mp3 dari response
+                const match = html.match(/https:\/\/f\.top4top\.io\/m_[a-zA-Z0-9]+\.mp3/);
+                
+                if (match) {
+                    box.innerHTML += `<div class='log-entry success'>[DONE] ${file.name}<br><span class='link-text'>${match[0]}</span></div>`;
+                } else {
+                    box.innerHTML += `<div class='log-entry error'>[!] Gagal extract link. File mungkin terlalu besar.</div>`;
+                }
+            } else {
+                box.innerHTML += `<div class='log-entry error'>[!] HTTP Error: ${response.status}</div>`;
+            }
+        } catch (e) {
+            box.innerHTML += `<div class='log-entry error'>[!] Proxy Error. Ulangi lagi.</div>`;
+        }
+        box.scrollTop = box.scrollHeight;
+    }
+}
+</script>
+
+</body>
+</html>
